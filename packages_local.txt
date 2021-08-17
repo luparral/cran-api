@@ -1,0 +1,7 @@
+Package: A3
+Version: 1.0.0
+Depends: R (>= 2.15.0), xtable, pbapply
+Suggests: randomForest, e1071
+License: GPL (>= 2)
+MD5sum: 027ebdd8affce8f0effaecfcd5f5ade2
+NeedsCompilation: no
