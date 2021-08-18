@@ -1,24 +1,29 @@
-# README
+# CRAN Index
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This API indexes CRAN packages from http://cran.r-project.org/src/contrib/ with their corresponding information.
 
-Things you may want to cover:
+## Dependencies
 
-* Ruby version
+ruby 3.0.2
+rails 6.1.4
+bundler 2.2.26
 
-* System dependencies
+## Instructions
 
-* Configuration
+  ```
+  bundle install
+  
+  rails server
+  ```
 
-* Database creation
+Go to http://localhost:3000/packages
 
-* Database initialization
+## Other useful commands
 
-* How to run the test suite
+This will reset the database and reload the current schema with all migrations.
 
-* Services (job queues, cache servers, search engines, etc.)
+  ```
+  rake db:reset db:migrate
+  ```
+ 
 
-* Deployment instructions
-
-* ...
