@@ -25,8 +25,9 @@ class PackagesController < ApplicationController
         end
       end
     end
+
+    #json_response(@packages)
     @packages = Package.all
-    json_response(@packages)
   end
 
 end
