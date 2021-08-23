@@ -10,8 +10,9 @@ class PackagesController < ApplicationController
   OpenURI::Buffer.const_set 'StringMax', 0
 
   def index
+    #packages = File.open('packages_local.txt').read
     packages = Net::HTTP.get(URI.parse("#{URI_CRAN}/PACKAGES"))
-    parsed_packages = parse(packages)
+    parsed_packages = ParseService.new(packages).parse
 
     # For each package/version, download the tar.gz to get all the data.
     parsed_packages.map do |package|
@@ -21,7 +22,8 @@ class PackagesController < ApplicationController
         unless package_already_exists(name, version)
           full_package_info = download_data(name, version)
 
-          parsed_package_info = parse_description(full_package_info)
+          # parsed_package_info = parse_description(full_package_info)
+          parsed_package_info = ParseService.new(full_package_info).parse_description
 
           Package.create(name: parsed_package_info["Package"],
                          version: parsed_package_info["Version"],
@@ -49,25 +51,6 @@ class PackagesController < ApplicationController
       content << tar.seek(description_file, &:read).force_encoding("UTF-8")
     end
     content
-  end
-
-  def parse_description(data)
-    parse(data)[0]
-  end
-
-  def parse (data)
-    # This takes the packages info raw as a string and convert it into an array of packages (as hash).
-    result_array = Array.new
-    array = data.encode("UTF-8", invalid: :replace, replace: "").split("\n\n") # get array of packages as strings
-    array.map do |package|
-      h = Hash.new
-      package.split("\n").map do |info|
-        key, value = info.split(': ')
-        h[key] = value
-      end
-      result_array << h
-    end
-    result_array
   end
 end
 
